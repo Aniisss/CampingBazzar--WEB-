@@ -34,7 +34,8 @@
     font-size: 3rem;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #ffd700; /* Golden color for the title */
+    color: #ffd700; 
+    font-family:Georgia, 'Times New Roman', Times, serif;
   }
   
   .welcome-content p {
@@ -75,9 +76,4 @@
       font-size: 1rem;
       padding: 8px 16px;
     }
-  }
-  
-
-  .display-3 {
-    font-family:Georgia, 'Times New Roman', Times, serif;
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import './home.css';
+import './welcomePage.css'
 
 function WelcomePage() {
   return (
@@ -25,5 +25,7 @@ function WelcomePage() {
     </div>
   );
 }
+
+
 
 export default WelcomePage;
