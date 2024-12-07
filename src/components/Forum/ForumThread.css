@@ -1,0 +1,50 @@
+/* Individual Thread Styles */
+.forum-thread {
+  background-color: #ffffff;
+  padding: 20px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 700px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.forum-thread:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.forum-thread h3 {
+  font-size: 1.6rem;
+  color: #1b3a3a;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.forum-thread-meta {
+  font-size: 1rem;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.view-thread-btn {
+  background-color: #ffd700;
+  color: #1b3a3a;
+  border: none;
+  padding: 10px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.view-thread-btn:hover {
+  background-color: #ffc300;
+  transform: translateY(-2px);
+}
+
+.view-thread-btn:active {
+  transform: translateY(0);
+}

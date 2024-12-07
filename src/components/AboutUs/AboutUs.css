@@ -1,0 +1,102 @@
+/* General Styling */
+.about-us {
+  font-family: 'Poppins', Arial, sans-serif;
+  color: #2e4600; /* Forest Green */
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.about-us-banner {
+  background: linear-gradient(to right, #6a994e, #a7c957); /* Green gradient */
+  color: white;
+  text-align: center;
+  padding: 80px 20px;
+  border-radius: 0 0 50px 50px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.about-us-banner h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  color: #f6fa70; /* Light Yellow */
+}
+
+.about-us-banner p {
+  font-size: 1.3rem;
+  opacity: 0.9;
+  color: #f8f9c5; /* Pale Yellow */
+}
+
+.about-us-content {
+  background: #f6f6e9; /* Soft Yellow */
+  padding: 50px 20px;
+  margin: 20px auto;
+  border-radius: 15px;
+  max-width: 900px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.about-section, .story-section, .offer-section, .commitment-section, .join-us-section {
+  margin-bottom: 40px;
+}
+
+.about-us h2 {
+  color: #386641; /* Dark Green */
+  font-size: 2rem;
+  margin-bottom: 15px;
+  border-left: 5px solid #a7c957; /* Light Green */
+  padding-left: 10px;
+}
+
+.about-us p {
+  color: #405d27; /* Olive Green */
+  font-size: 1.1rem;
+}
+
+.about-us ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-us ul li {
+  background: #d9e4dd; /* Pale Green */
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-us ul li strong {
+  color: #2e4600; /* Forest Green */
+  margin-right: 5px;
+}
+
+.about-us ul li::before {
+  content: "✓";
+  color: #a7c957; /* Light Green */
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.join-us-section p:last-child {
+  font-weight: bold;
+  color: #386641; /* Dark Green */
+  text-align: center;
+}
+
+/* Add some hover effects for interactivity */
+.about-us ul li:hover {
+  background: #c8e4c5; /* Slightly brighter green */
+  transform: translateY(-3px);
+  transition: all 0.3s ease;
+}
+
+.about-us-banner:hover {
+  background: linear-gradient(to right, #588c7e, #87b48e); /* Slightly darker gradient */
+  transition: background 0.3s ease;
+}

@@ -1,7 +1,7 @@
-import React from 'react';
-import './welcomePage.css'
+import React, { useRef } from 'react';
+import './welcomePage.css';   
+function WelcomePage({ onExploreClick }) {
 
-function WelcomePage() {
   return (
     <div className="welcome-page">
       {/* Background Overlay */}
@@ -12,20 +12,21 @@ function WelcomePage() {
             Discover the best camping gear, plan your adventures, and connect with fellow enthusiasts.
           </p>
           <div className="buttons">
-            <a href="/explore" className="btn btn-warning btn-lg me-3">
+            {/* Use button to trigger scrolling */}
+            <button
+              onClick={onExploreClick}
+              className="btn btn-warning btn-lg me-3"
+            >
               Explore Now
-            </a>
+            </button>
             <a href="/login" className="btn btn-outline-light btn-lg">
               Login
             </a>
           </div>
         </div>
       </div>
-      
     </div>
+    
   );
-}
-
-
-
+}   
 export default WelcomePage;

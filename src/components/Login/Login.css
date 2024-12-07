@@ -1,0 +1,77 @@
+/* Login Page Styles */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 10, 10, 0.6), /* Reduced opacity for lighter gradient */
+      rgba(0, 0, 0, 0.4) /* More transparent to reveal the image */
+    ),
+    url('/public/assets/backgroundd.jpg'); /* Corrected path */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #fff;
+  }
+  
+  .login-container {
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    padding: 30px 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .login-container h1 {
+    font-size: 2rem;
+    color: #0288d1;
+    margin-bottom: 20px;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .login-form input:focus {
+    border-color: #0288d1;
+    box-shadow: 0px 0px 8px rgba(2, 136, 209, 0.5);
+  }
+  
+  .login-button {
+    background-color: #0288d1;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+  }
+  
+  .login-button:hover {
+    background-color: #026aa7;
+    transform: translateY(-2px);
+  }
+  
+  .login-button:active {
+    transform: translateY(0);
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+  

@@ -1,0 +1,112 @@
+/* Forum Container Styles */
+.forum-container {
+  background: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+  padding: 60px 20px;
+  color: #333;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 16px; /* Smooth edges */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Depth effect */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Soft border */
+  transition: box-shadow 0.3s ease, border-color 0.3s ease; /* Smooth hover effects */
+}
+
+/* Remove blurring and scaling on hover */
+.forum-container:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Enhance shadow for depth */
+  border-color: rgba(255, 255, 255, 0.8); /* Slightly brighter border */
+}
+
+/* Header Styling */
+.forum-header {
+  margin-bottom: 40px;
+}
+
+.forum-title {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #1b3a3a;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle text shadow for depth */
+}
+
+.forum-description {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Search Bar Styling */
+.forum-search {
+  margin-top: 20px;
+}
+
+.forum-search-input {
+  padding: 12px;
+  width: 100%;
+  max-width: 600px;
+  font-size: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.5); /* Match semi-transparent theme */
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: rgba(255, 255, 255, 0.9); /* Slight transparency for readability */
+}
+
+.forum-search-input:focus {
+  border-color: #1b3a3a; /* Highlighted focus border */
+  box-shadow: 0 0 10px rgba(27, 58, 58, 0.3); /* Subtle glow */
+}
+
+/* Threads Section */
+.forum-threads {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Button Styles */
+.new-thread-btn-container {
+  margin-top: 40px;
+}
+
+.new-thread-btn {
+  background-color: #ffd700;
+  color: #1b3a3a;
+  border: none;
+  padding: 12px 36px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Button depth */
+}
+
+.new-thread-btn:hover {
+  background-color: #ffc300;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Hover depth */
+}
+
+.new-thread-btn:active {
+  transform: translateY(0);
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .forum-container {
+      padding: 40px 15px;
+  }
+
+  .forum-title {
+      font-size: 2rem;
+  }
+
+  .forum-search-input {
+      max-width: 100%; /* Adjust search bar for smaller screens */
+  }
+}

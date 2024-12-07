@@ -1,0 +1,31 @@
+.home-container {
+  background: linear-gradient(
+      to bottom,
+      rgba(10, 10, 10, 0.6), /* Reduced opacity for lighter gradient */
+      rgba(0, 0, 0, 0.4) /* More transparent to reveal the image */
+  ),
+  url('/public/assets/backgroundd.jpg'); /* Corrected path */
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  color: #fff; /* Default text color for better contrast on dark backgrounds */
+}
+
+/* Forum Section Styling */
+.forum-section {
+  margin-top: 60px;
+  padding: 40px 20px;
+  background-color:transparent; /* Light teal for visual separation */
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  border-top: 5px solid #ffd700; /* Golden border to highlight the forum */
+}
+
+/* Forum Section Heading (optional) */
+.forum-section .forum-header {
+  margin-bottom: 20px;
+}
+

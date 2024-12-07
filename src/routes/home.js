@@ -1,15 +1,43 @@
-import React from "react";
-import Header from "../components/header/header";
+import React, { useRef } from "react";
+import Header from "../components/header/header"; // Ensure consistent casing
 import WelcomePage from "../components/welcomePage/welcomePage";
 import Footer from "../components/footer/footer";
-import GearsDescription from "../components/gearsDescription/gearsDescription";
+import GearIntroduction from "../components/gearsDescription/GearIntroduction";
+import GearSection from "../components/gearSection/GearSection";
+import Forum from "../components/Forum/Forum"; // Ensure consistent casing
+import './home.css';
+import ExploreAppSection from "../components/ExploreAppSection/ExploreAppSection";
 
 function Home() {
+  // Use `useRef` for smooth scrolling
+  const gearSectionRef = useRef(null);
+  const forumSectionRef = useRef(null);
+
+  const scrollToGearSection = () => {
+    gearSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  const scrollToForumSection = () => {
+    forumSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div className="Home">
-      <Header />
-      <WelcomePage />
-      <GearsDescription />
+    <div className="home-container">
+      {/* Header and Welcome Page */}
+      <Header onCommunityClick={scrollToForumSection} />
+      <WelcomePage onExploreClick={scrollToGearSection} />
+
+      {/* Gear Section and Description */}
+      <div ref={gearSectionRef}>
+        <GearIntroduction />
+        <GearSection />
+      </div>
+
+       {/* Forum Section */}
+       <section ref={forumSectionRef} className="forum-section">
+        <Forum />
+      </section>
+      <ExploreAppSection />
+      {/* Footer */}
       <Footer />
     </div>
   );

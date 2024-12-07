@@ -1,0 +1,36 @@
+.gear-introduction {
+  padding: 4rem 1rem;
+  color: white; /* Make text white for contrast */
+  text-align: center;
+  position: relative; /* For better overlay control */
+}
+
+.gear-introduction::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4); /* Dark overlay to improve text visibility */
+}
+
+.container {
+  position: relative; /* Ensure content appears above the overlay */
+  z-index: 1;
+}
+
+.introduction-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.introduction-text {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
