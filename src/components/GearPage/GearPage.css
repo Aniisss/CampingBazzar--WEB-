@@ -177,8 +177,8 @@ body {
   background: #fff;
   border-radius: 15px;
   padding: 30px 20px;
-  width: 90%;
-  max-width: 600px;
+  width: 25%;
+  max-width: 500px;
   text-align: center;
   position: relative;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
@@ -186,7 +186,7 @@ body {
 
 .gear-modal-close {
   position: absolute;
-  top: 15px;
+  top: 5px;
   right: 20px;
   font-size: 1.5rem;
   color: #6a994e;
@@ -199,8 +199,6 @@ body {
 }
 
 .gear-modal-image {
-  width: 100%;
-  height: 300px;
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 15px;
@@ -354,6 +352,7 @@ body {
   padding: 15px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 300px;
 }
 
 .community-article:hover {
@@ -384,4 +383,11 @@ body {
   font-size: 1.2rem;
   color: #2e4600; /* Forest green */
   font-weight: bold;
+}
+.community-offers img {
+  width: 100%; /* Ensure the image scales to fit its container */
+  max-width: 200px; /* Set a maximum width for standard sizing */
+  height: 200px; /* Set a fixed height */
+  object-fit: cover; /* Prevent stretching and crop if necessary */
+  border-radius: 8px; /* Optional: Rounded corners */
 }
