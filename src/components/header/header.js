@@ -1,80 +1,115 @@
-import { FaSearch } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaSearch, FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "../header/header.css";
 
-function Header({ onCommunityClick }) {
+function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    if (loggedInUser) {
+      setIsLoggedIn(true);
+      setUser(loggedInUser);
+    }
+  }, []);
+
+  const toggleDropdown = () => {
+    setShowDropdown((prev) => !prev);
+  };
+
+  const closeDropdown = () => {
+    setShowDropdown(false);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    setUser({});
+    closeDropdown();
+  };
+
   return (
-    <header className="p-3 text-bg-dark header">
-      <div className="container">
-        <div className="row align-items-center">
-          {/* Logo Section */}
-          <div className="col-3">
-            <a href="/" className="logo text-white">
-              Camping Bazaar
-            </a>
-          </div>
+    <header className="header">
+      <div className="container d-flex">
+        {/* Logo Section */}
+        <Link to="/" className="logo">
+          Camping Bazaar
+        </Link>
 
-          {/* Navigation Section */}
-          <div className="col-4">
-            <ul className="nav justify-content-center mb-0">
-              <li>
-                <Link to="/" className="nav-link px-2 text-white">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/gears" className="nav-link px-2 text-white">
-                  Gears
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/community-forum"
-                  className="nav-link px-2 text-white"
-                >
-                  Community
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="nav-link px-2 text-white">
-                  About
-                </Link>
-              </li>
-            </ul>
-          </div>
+        {/* Navigation Links */}
+        <nav className="nav">
+          <Link to="/" className="nav-link">
+            Home
+          </Link>
+          <Link to="/gears" className="nav-link">
+            Gears
+          </Link>
+          <Link to="/community-forum" className="nav-link">
+            Community
+          </Link>
+          <Link to="/about" className="nav-link">
+            About
+          </Link>
+        </nav>
 
-          {/* Search Bar Section */}
-          <div className="col-3">
-            <div className="search-bar d-flex align-items-center">
-              <FaSearch className="search-icon me-2" size="18px" />
-              <input
-                type="search"
-                className="form-control form-control-dark text-bg-dark"
-                placeholder="Search items..."
-                aria-label="Search"
+        {/* Search Section */}
+        <div className="search-bar1">
+          <FaSearch className="search-icon1" />
+          <input
+            id="default"
+            type="text"
+            className="form-control1"
+            placeholder="Search items..."
+          />
+        </div>
+
+        {/* User Profile Section */}
+        <div className="profile-section">
+          {isLoggedIn ? (
+            <div className="profile-info">
+              <img
+                src={user.avatarUrl || "default-avatar.png"}
+                alt="Profile"
+                className="profile-avatar"
+                onClick={toggleDropdown}
               />
-            </div>
-          </div>
+              <span style={{ marginLeft: 16 + "px" }} className="username">
+                {user.username}
+              </span>
 
-          {/* Authentication Buttons */}
-          <div className="col-2 text-end">
-            <button type="button" className="btn btn-outline-light me-2">
-              <Link
-                to="/login"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
+              {showDropdown && (
+                <div className="dropdown-menu">
+                  <Link to="/profile" className="dropdown-item">
+                    View Profile
+                  </Link>
+                  <Link
+                    to="/profile/edit"
+                    className="dropdown-item"
+                    onClick={closeDropdown}
+                  >
+                    Settings
+                  </Link>
+                  <button
+                    className="dropdown-item logout-btn"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="auth-buttons">
+              <Link to="/login" className="btn btn-outline-light">
                 Login
               </Link>
-            </button>
-            <button type="button" className="btn btn-warning">
-              <Link
-                to="/sign-up"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
+              <Link to="/sign-up" className="btn btn-warning">
                 Sign-up
               </Link>
-            </button>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </header>

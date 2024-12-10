@@ -6,7 +6,9 @@ import CommunityForum from "./components/CommunityForum/CommunityForum";
 import SignUpPage from "./components/SignUpPage/SignUpPage";
 import Login from "./components/Login/Login";
 import GearPage from "./components/GearPage/GearPage";
-import AboutUs from "./components/AboutUs/AboutUs"
+import AboutUs from "./components/AboutUs/AboutUs";
+import Profile from "./components/profile/profile";
+import EditProfile from "./components/EditProfile/EditProfile";
 function App() {
   return (
     <Router>
@@ -18,6 +20,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/gears" element={<GearPage />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/profile" element={<Profile />} /> {/* Profile route */}
+        <Route path="/profile/edit" element={<EditProfile />} />
       </Routes>
     </Router>
   );

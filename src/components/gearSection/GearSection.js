@@ -1,50 +1,112 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './GearSection.css';
+import React, { useState } from "react";
+import "./GearSection.css";
+import { useNavigate } from "react-router-dom";
 
 function GearSection() {
-  const navigate = useNavigate(); // Use React Router for navigation
+  const [selectedItem, setSelectedItem] = useState(null);
+  const navigate = useNavigate();
+  const handleExploreGear = () => {
+    navigate("/gears");
+  };
 
-  // Simulated gear data with image URLs
   const gearItems = [
-    { id: 1, name: 'Tent', category: 'Shelter', imageUrl: '/assets/CampingTent.jpg' },
-    { id: 2, name: 'Sleeping Bag', category: 'Sleep', imageUrl: '/assets/sleeping-bag.jpg' },
-    { id: 3, name: 'Camping Stove', category: 'Cooking', imageUrl: '/assets/stove.jpg' },
-    { id: 4, name: 'Headlamp', category: 'Lighting', imageUrl: 'https://via.placeholder.com/150?text=Headlamp' },
-    { id: 5, name: 'Backpack', category: 'Storage', imageUrl: '/assets/HikingBackpack.jpg' },
-    { id: 6, name: 'Camping Chair', category: 'Comfort', imageUrl: 'https://via.placeholder.com/150?text=Camping+Chair' },
+    {
+      id: 1,
+      name: "Tent",
+      category: "Shelter",
+      imageUrl: "/assets/CampingTent.jpg",
+      description: "Durable camping tents for all weather.",
+      seller: {
+        name: "John Doe",
+        contact: "johndoe@example.com",
+        location: "New York, USA",
+      },
+    },
+    {
+      id: 2,
+      name: "Sleeping Bag",
+      category: "Sleep",
+      imageUrl: "/assets/sleeping-bag.jpg",
+      description: "Comfortable and warm sleeping bags.",
+      seller: {
+        name: "Jane Smith",
+        contact: "janesmith@example.com",
+        location: "Los Angeles, USA",
+      },
+    },
+    // Additional gear items...
   ];
 
-  const handleExploreMore = () => {
-    navigate('/gears'); // Redirect to the Gear Page
+  const handleCardDetails = (item) => {
+    setSelectedItem(item); // Open the modal with selected item details
+  };
+
+  const closeModal = () => {
+    setSelectedItem(null); // Close the modal
   };
 
   return (
-    <div className="gear-section">
+    <section className="gear-section">
       <div className="gear-section-content">
         <h2 className="gear-section-title">Camping Gear Services</h2>
         <p className="gear-section-description">
-          Whether you’re looking to sell your gently used camping equipment or buy high-quality gear for your next adventure, 
-          we’ve got you covered. Browse some of our featured items below or explore the full collection.
+          Explore a wide range of camping gear. Whether you need durable tents,
+          cozy sleeping bags, or reliable lighting, we have it all.
         </p>
 
-        {/* Featured Gear Items */}
         <div className="gear-items">
           {gearItems.map((item) => (
-            <div key={item.id} className="gear-card1">
-              <img src={item.imageUrl} alt={item.name} className="gear-card-image" />
-              <h3>{item.name}</h3>
-              <p>{item.category}</p>
+            <div key={item.id} className="gear-card">
+              <img
+                src={item.imageUrl}
+                alt={item.name}
+                className="gear-card-image"
+              />
+              <h3 className="gear-card-title">{item.name}</h3>
+              <p className="gear-card-category">{item.category}</p>
+              <p className="gear-card-description">{item.description}</p>
+              <button
+                className="gear-card-details-btn"
+                onClick={() => handleCardDetails(item)}
+              >
+                Learn More
+              </button>
             </div>
           ))}
         </div>
 
-        {/* Explore More Button */}
-        <button className="explore-service-btn" onClick={handleExploreMore}>
-          Learn More & Explore Gear
-        </button>
+        {selectedItem && (
+          <div className="gear-modal">
+            <div className="gear-modal-content1">
+              <button className="gear-modal-close1" onClick={closeModal}>
+                &times;
+              </button>
+              <img
+                src={selectedItem.imageUrl}
+                alt={selectedItem.name}
+                className="gear-modal-image1"
+              />
+              <h3 className="gear-modal-title">{selectedItem.name}</h3>
+              <p className="gear-modal-category">
+                Category: {selectedItem.category}
+              </p>
+              <p className="gear-modal-description">
+                {selectedItem.description}
+              </p>
+              <div className="gear-seller-info">
+                <h4>Seller Information:</h4>
+                <p>Name: {selectedItem.seller.name}</p>
+                <p>Contact: {selectedItem.seller.contact}</p>
+                <p>Location: {selectedItem.seller.location}</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+      <button className="explore-all-btn" onClick={handleExploreGear}>
+        View All Gear
+      </button>
+    </section>
   );
 }
 

@@ -15,9 +15,21 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Simulate a backend login process (replace with actual validation)
-    if (formData.email === "user@example.com" && formData.password === "password") {
+    if (
+      formData.email === "user@example.com" &&
+      formData.password === "password"
+    ) {
       console.log("Login Successful!");
-      navigate("/home"); // Navigate to the Home page after successful login
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username: "Azer",
+          avatarUrl:
+            "https://pics.craiyon.com/2023-11-26/oMNPpACzTtO5OVERUZwh3Q.webp  ",
+        })
+      );
+
+      navigate("/"); // Navigate to the Home page after successful login
     } else {
       setError("Invalid email or password. Please try again.");
     }
@@ -45,7 +57,9 @@ const Login = () => {
             required
           />
           {error && <p className="error-message">{error}</p>}
-          <button type="submit" className="login-button">Login</button>
+          <button type="submit" className="login-button">
+            Login
+          </button>
         </form>
       </div>
     </div>

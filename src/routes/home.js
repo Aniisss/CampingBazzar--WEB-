@@ -5,7 +5,7 @@ import Footer from "../components/footer/footer";
 import GearIntroduction from "../components/gearsDescription/GearIntroduction";
 import GearSection from "../components/gearSection/GearSection";
 import Forum from "../components/Forum/Forum"; // Ensure consistent casing
-import './home.css';
+import "./home.css";
 import ExploreAppSection from "../components/ExploreAppSection/ExploreAppSection";
 
 function Home() {
@@ -23,8 +23,14 @@ function Home() {
   return (
     <div className="home-container">
       {/* Header and Welcome Page */}
-      <Header onCommunityClick={scrollToForumSection} />
-      <WelcomePage onExploreClick={scrollToGearSection} />
+      <Header
+        className="header-container"
+        onCommunityClick={scrollToForumSection}
+      />
+      <WelcomePage
+        className="welcome-container"
+        onExploreClick={scrollToGearSection}
+      />
 
       {/* Gear Section and Description */}
       <div ref={gearSectionRef}>
@@ -32,8 +38,8 @@ function Home() {
         <GearSection />
       </div>
 
-       {/* Forum Section */}
-       <section ref={forumSectionRef} className="forum-section">
+      {/* Forum Section */}
+      <section ref={forumSectionRef} className="forum-section">
         <Forum />
       </section>
       <ExploreAppSection />

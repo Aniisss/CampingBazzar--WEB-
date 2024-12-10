@@ -8,7 +8,7 @@
   justify-content: center; /* Center the content horizontally */
   color: white;
   padding: 0;
-  margin: 0;
+  margin-top: 27vh;
 }
 
 /* Dark Overlay Effect */
@@ -19,14 +19,14 @@
   width: 100%;
   height: 100%;
   background-color: transparent; /* Dark overlay */
-  z-index: 1; /* Ensure it stays behind the content */
+ 
 }
 
 /* Welcome Content */
 .welcome-content {
-  z-index: 2; /* Ensure content is above the overlay */
+  /* Ensure content is above the overlay */
   text-align: center; /* Center the text */
-  padding: 250px 20px; /* Add padding for small screens */
+  padding: 20px 20px; /* Add padding for small screens */
 }
 
 .welcome-content h1 {

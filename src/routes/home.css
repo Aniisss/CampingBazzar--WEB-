@@ -1,10 +1,11 @@
+/* Home Container Styling */
 .home-container {
   background: linear-gradient(
       to bottom,
-      rgba(10, 10, 10, 0.6), /* Reduced opacity for lighter gradient */
-      rgba(0, 0, 0, 0.4) /* More transparent to reveal the image */
-  ),
-  url('/public/assets/backgroundd.jpg'); /* Corrected path */
+      #000000cb, /* Darker gradient for better readability */
+      rgba(0, 0, 0, 0.664) /* Slightly transparent for background visibility */
+    ),
+    url('/public/assets/backgroundd.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -12,20 +13,50 @@
   min-height: 100vh;
   padding: 0;
   margin: 0;
-  color: #fff; /* Default text color for better contrast on dark backgrounds */
+  color: #fff; /* White text for strong contrast */
 }
 
 /* Forum Section Styling */
 .forum-section {
   margin-top: 60px;
   padding: 40px 20px;
-  background-color:transparent; /* Light teal for visual separation */
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-  border-top: 5px solid #ffd700; /* Golden border to highlight the forum */
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black for subtle contrast */
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for depth */
+  border-radius: 10px; /* Rounded corners for a modern look */
 }
 
-/* Forum Section Heading (optional) */
+/* Forum Section Heading */
 .forum-section .forum-header {
   margin-bottom: 20px;
+  color: #ffd700; /* Golden color for the heading to match the border */
+  font-size: 1.8rem; /* Slightly larger for emphasis */
+  text-align: center; /* Center alignment for better visual hierarchy */
 }
 
+/* General Text Styling (Optional Enhancements) */
+.forum-section span {
+  color: #f0f0f0; /* Light grey for contrast without being stark white */
+  font-size: 1rem; /* Standardized text size for better readability */
+}
+.header-container{
+     z-index: 999999999999;
+}
+.welcome-container{
+  z-index: -1;
+}
+
+/* Optional Media Query for Smaller Screens */
+@media (max-width: 768px) {
+  .home-container {
+    background-attachment: scroll; /* Fix background scrolling on smaller screens */
+  }
+
+  .forum-section {
+    padding: 20px 10px; /* Adjust padding for smaller viewports */
+  }
+
+  .forum-section .forum-header {
+    font-size: 1.5rem; /* Slightly smaller font size */
+  }
+  
+}
