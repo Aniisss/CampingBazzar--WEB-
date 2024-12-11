@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaUserCircle } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa"; // For the search icon
 import { Link } from "react-router-dom";
-import "../header/header.css";
+import "./header.css"; // Header styling
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
   const [showDropdown, setShowDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -23,11 +24,22 @@ function Header() {
   const closeDropdown = () => {
     setShowDropdown(false);
   };
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     setUser({});
     closeDropdown();
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    console.log("Search for:", searchQuery);
+    // Add logic to handle search functionality here
   };
 
   return (
@@ -55,15 +67,16 @@ function Header() {
         </nav>
 
         {/* Search Section */}
-        <div className="search-bar1">
+        <form onSubmit={handleSearchSubmit} className="search-bar1">
           <FaSearch className="search-icon1" />
           <input
-            id="default"
             type="text"
-            className="form-control1"
-            placeholder="Search items..."
+            className="form-control1-dark"
+            placeholder="Search for items..."
+            value={searchQuery}
+            onChange={handleSearchChange}
           />
-        </div>
+        </form>
 
         {/* User Profile Section */}
         <div className="profile-section">
@@ -75,9 +88,7 @@ function Header() {
                 className="profile-avatar"
                 onClick={toggleDropdown}
               />
-              <span style={{ marginLeft: 16 + "px" }} className="username">
-                {user.username}
-              </span>
+              <span className="username">{user.username}</span>
 
               {showDropdown && (
                 <div className="dropdown-menu">

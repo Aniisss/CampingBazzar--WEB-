@@ -84,7 +84,7 @@ const Profile = () => {
         {/* Profile Settings Section */}
         <div className="profile1-section">
           <h3>Profile Settings</h3>
-          <button className="btn btn-warning">
+          <button className="btn">
             <Link to="/profile/edit" className="btn btn-warning">
               Edit Profile
             </Link>
