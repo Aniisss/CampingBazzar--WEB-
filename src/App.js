@@ -8,7 +8,7 @@ import Login from "./components/Login/Login";
 import GearPage from "./components/GearPage/GearPage";
 import AboutUs from "./components/AboutUs/AboutUs";
 import Profile from "./components/profile/profile";
-import EditProfile from "./components/EditProfile/EditProfile";
+import EditProfilen from "./components/EditProfile/EditProfile";
 function App() {
   return (
     <Router>
