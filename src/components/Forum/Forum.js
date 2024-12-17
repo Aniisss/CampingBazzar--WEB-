@@ -13,6 +13,8 @@ function Forum() {
       title: "Best camping spots for beginners?",
       author: "John Doe",
       comments: 5,
+      imageUrl:
+        "C:UsersAsusDesktopCampingBazzar--WEB-publicassetsgoogle-play.png",
       details:
         "Discover the best spots for first-time campers, with tips and suggestions to make your adventure memorable!",
     },
