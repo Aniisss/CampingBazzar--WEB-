@@ -54,12 +54,21 @@ const SignUpPage = () => {
         password
       );
 
-      // Update the user's display name in Firebase
-      await updateProfile(userCredential.user, {
-        displayName: username,
+      // fetch backend url to add user
+      const response = await fetch("http://20.64.237.50:3000/api/users/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${userCredential.user.accessToken}`,
+        },
+        body: JSON.stringify({
+          username: username
+        }),
       });
 
-      console.log("User Signed Up Successfully:", userCredential.user);
+      if (!response.ok) {
+        throw new Error("Failed to sign up. Please try again.");
+      }
 
       // Optionally, save the user data locally or in a database
       localStorage.setItem(
@@ -72,8 +81,7 @@ const SignUpPage = () => {
         })
       );
 
-      // Redirect to the Login page after successful sign-up
-      navigate("/login");
+      navigate("/home");
     } catch (error) {
       console.error("Sign Up Failed:", error.message);
       setError(error.message || "Failed to sign up. Please try again.");
