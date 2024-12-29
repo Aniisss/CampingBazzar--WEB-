@@ -5,39 +5,11 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import app from "../../firebaseConfig"; //
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const storage = getStorage(app);
 const firestore = getFirestore(app);
-const gearItems = [
-  {
-    id: 1,
-    name: "Tent",
-    category: "Shelter",
-    price: 150,
-    description: "Durable and weather-resistant tents.",
-    imageUrl: "/assets/CampingTent.jpg",
-    seller: "John Doe",
-  },
-  {
-    id: 2,
-    name: "Sleeping Bag",
-    category: "Sleep",
-    price: 50,
-    description: "Stay warm and comfortable.",
-    imageUrl: "/assets/sleeping-bag.jpg",
-    seller: "Jane Smith",
-  },
-  {
-    id: 3,
-    name: "Camping Stove",
-    category: "Cooking",
-    price: 80,
-    description: "Lightweight and efficient.",
-    imageUrl: "/assets/stove.jpg",
-    seller: "Bob Johnson",
-  },
-  // Additional gearItems...
-];
 
 const GearPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -46,6 +18,63 @@ const GearPage = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [userArticles, setUserArticles] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [gearItems, setGearItems] = useState([]);
+  const navigate = useNavigate();
+
+  const formatTimeAgo = (timestamp) => {
+    const now = new Date();
+    const createdAt = new Date(timestamp * 1000); // Convert seconds to milliseconds
+    const diffInSeconds = Math.floor((now - createdAt) / 1000);
+
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds} second${diffInSeconds === 1 ? "" : "s"} ago`;
+    }
+
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`;
+    }
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) {
+      return `${diffInHours} hour${diffInHours === 1 ? "" : "s"} ago`;
+    }
+
+    const diffInDays = Math.floor(diffInHours / 24);
+    return `${diffInDays} day${diffInDays === 1 ? "" : "s"} ago`;
+  };
+
+  useEffect(() => {
+    const fetchGearItems = async () => {
+      try {
+        const response = await fetch(
+          "http://20.64.237.50:3000/api/items/getItems"
+        );
+        const data = await response.json();
+        console.log(data);
+
+        const transformedItems = data.items.map((item, index) => ({
+          id: item.itemID,
+          name: item.title,
+          category: item.category,
+          imageUrl: item.image,
+          description: item.description,
+          seller: {
+            name: item.userName,
+            contact: item.email,
+            location: "Tunisia",
+          },
+          created: formatTimeAgo(item.createdAt._seconds),
+        }));
+        setGearItems(transformedItems);
+      } catch (error) {
+        console.error("Error fetching gear items:", error);
+      }
+    };
+
+    fetchGearItems();
+    setUserArticles([]);
+  }, []);
 
   // Added state for popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -54,6 +83,7 @@ const GearPage = () => {
     description: "",
     price: "",
     imageFile: null,
+    category: "",
     location: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -93,27 +123,55 @@ const GearPage = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please log in to submit gear.");
+      navigate("/login");
+    }
 
     try {
-      // Upload the image to Firebase Storage
-      const imageRef = ref(storage, `gear-images/${newGear.imageFile.name}`);
-      await uploadBytes(imageRef, newGear.imageFile);
-      const imageUrl = await getDownloadURL(imageRef);
+      // upload image to backend api
+      const formData = new FormData();
+      formData.append("image", newGear.imageFile);
 
-      // Save the gear details to Firestore
-      const auth = getAuth(app);
-      const user = auth.currentUser;
+      const response = await fetch(
+        "http://20.64.237.50:3000/api/items/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+      const data = response.json();
+      const imageUrl = data.imageUrl;
 
-      await addDoc(collection(firestore, "gear"), {
-        title: newGear.title,
-        description: newGear.description,
-        price: newGear.price,
-        imageUrl: imageUrl,
-        location: newGear.location,
-        submittedBy: user ? user.email : "Anonymous",
-        submittedAt: new Date(),
-      });
-
+      const response2 = await fetch(
+        "http://20.64.237.50:3000/api/items/createItem",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title: newGear.title,
+            description: newGear.description,
+            price: newGear.price,
+            image: imageUrl,
+            category: newGear.category,
+            location: newGear.location,
+          }),
+        }
+      ).then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to submit gear.");
+        }
+      })
+      
       alert("Gear submitted successfully!");
       setIsPopupOpen(false);
       setNewGear({
@@ -121,6 +179,7 @@ const GearPage = () => {
         description: "",
         price: "",
         imageFile: null,
+        category: "",
         location: "",
       });
     } catch (error) {
@@ -154,7 +213,7 @@ const GearPage = () => {
       if (sortOption === "price") return a.price - b.price;
       return 0;
     });
-  }, [searchQuery, selectedCategory, sortOption]);
+  }, [searchQuery, selectedCategory, sortOption, gearItems]);
 
   return (
     <div>

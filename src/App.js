@@ -16,12 +16,13 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/forum" element={<Forum />} />
         <Route path="/community-forum" element={<CommunityForum />} />
-        <Route path="/sign-up" element={<SignUpPage />} />²
+        <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/gears" element={<GearPage />} />
         <Route path="/about" element={<AboutUs />} />
-        <Route path="/profile" element={<Profile />} /> {/* Profile route */}
+        <Route path="/profile" element={<Profile />} />
         <Route path="/profile/edit" element={<EditProfile />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </Router>
   );

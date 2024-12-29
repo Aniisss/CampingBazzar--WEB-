@@ -30,20 +30,38 @@ const Login = () => {
         formData.email,
         formData.password
       );
-      const user = userCredential.user;
+      const token = await userCredential.user.getIdToken();
+      console.log(token);
 
+      const response = await fetch("http://20.64.237.50:3000/api/users/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      if (!response.ok) {
+        console.error(`Error: ${response.status} - ${response.statusText}`);
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      } 
+
+        const data = await response.json();
+        console.log(data);
+  
       // Save user details to localStorage (or handle however you prefer)
       localStorage.setItem(
         "user",
         JSON.stringify({
-          username: user.displayName || "User",
-          email: user.email,
+          username: data.user.userName || "User",
+          email: data.user.email,
+          token: token,
           avatarUrl:
-            "https://pics.craiyon.com/2023-11-26/oMNPpACzTtO5OVERUZwh3Q.webp", // You can replace this with a real profile photo if available
+            "https://pics.craiyon.com/2023-11-26/oMNPpACzTtO5OVERUZwh3Q.webp",
         })
       );
 
-      console.log("Login Successful:", user.email);
+      console.log("Login Successful:", data.user.email);
       navigate("/"); // Redirect to the Home page after successful login
     } catch (error) {
       // Handle errors from Firebase

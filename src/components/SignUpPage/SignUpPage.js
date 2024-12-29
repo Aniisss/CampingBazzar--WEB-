@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth"; // Firebase imports
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Firebase imports
 import app from "../../firebaseConfig"; // Import your Firebase configuration
 import "./SignUpPage.css";
 
@@ -57,20 +53,29 @@ const SignUpPage = () => {
       // Access to fetch at 'http://20.64.237.50:3000/api/users/signin' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
 
       // fetch backend url to add user
-      const response = await fetch("http://20.64.237.50:3000/api/users/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${userCredential.user.accessToken}`,
-        },
-        body: JSON.stringify({
-          username: username
-        }),
-        mode: 'no-cors', // disable CORS policy
-      });
+      const tokennn = await userCredential.user.getIdToken();
+      console.log(tokennn);
+
+      const response = await fetch(
+        "http://20.64.237.50:3000/api/users/signin",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokennn}`,
+          },
+          body: JSON.stringify({
+            userName: username,
+          })
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Failed to sign up. Please try again.");
+        console.error(`Error: ${response.status} - ${response.statusText}`);
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      } else {
+        const data = await response.json();
+        console.log(data);
       }
 
       // Optionally, save the user data locally or in a database
@@ -79,6 +84,7 @@ const SignUpPage = () => {
         JSON.stringify({
           username: username,
           email: email,
+          token: tokennn,
           avatarUrl:
             "https://pics.craiyon.com/2023-11-26/oMNPpACzTtO5OVERUZwh3Q.webp", // Placeholder avatar URL
         })
@@ -141,4 +147,3 @@ const SignUpPage = () => {
 };
 
 export default SignUpPage;
-

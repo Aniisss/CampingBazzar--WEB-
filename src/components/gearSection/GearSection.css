@@ -70,6 +70,11 @@
   margin: 10px 0;
 }
 
+.gear-card-created {
+  font-size: 0.8rem;
+  color: #777;
+}
+
 .gear-card-details-btn {
   background: #ffd700;
   color: #333;
