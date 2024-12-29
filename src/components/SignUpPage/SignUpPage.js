@@ -53,6 +53,8 @@ const SignUpPage = () => {
         email,
         password
       );
+      // Fix CORS origin problem
+      // Access to fetch at 'http://20.64.237.50:3000/api/users/signin' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
 
       // fetch backend url to add user
       const response = await fetch("http://20.64.237.50:3000/api/users/signin", {
@@ -64,6 +66,7 @@ const SignUpPage = () => {
         body: JSON.stringify({
           username: username
         }),
+        mode: 'no-cors', // disable CORS policy
       });
 
       if (!response.ok) {
@@ -138,3 +141,4 @@ const SignUpPage = () => {
 };
 
 export default SignUpPage;
+
