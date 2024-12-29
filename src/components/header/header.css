@@ -1,0 +1,228 @@
+/* ================== Variables ================== */
+:root {
+    --gold-color: #ffd700;
+    --dark-teal: rgba(27, 58, 58, 0.7);
+    --light-gray: #f0f0f0;
+    --hover-gold: #ffc300;
+    --white-transparent: rgba(255, 255, 255, 0.3);
+    --hover-transparent: rgba(255, 255, 255, 0.5);
+}
+
+/* ================== Header Styling ================== */
+
+/* Header Background and Layout */
+.header {
+    background-color: var(--dark-teal);
+    padding: 15px 0;
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+/* Flexbox Layout for Header */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+.username {
+    margin-left: 10px;
+}
+
+/* ================== Navigation Styling ================== */
+.nav {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.nav-link {
+    color: var(--light-gray);
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #fff;
+}
+
+/* ================== Logo Styling ================== */
+.logo {
+    color: var(--gold-color);
+    text-decoration: none;
+    font-weight: bolder;
+    font-family: 'Georgia', 'Times New Roman', Times, serif;
+    font-size: 25px;
+    background-color: rgba(47, 88, 88, 0.7);
+    padding: 10px 23px;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ================== Search Bar Styling ================== */
+.search-bar1 {
+    display: flex;
+    align-items: center;
+    background-color: var(--white-transparent);
+    padding: 8px 15px;
+    border-radius: 25px;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-bar1:hover {
+    background-color: var(--hover-transparent);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.search-icon1 {
+    color: var(--gold-color);
+    font-size: 1.2rem;
+}
+
+.form-control1-dark {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    width: 3.2rem;
+    transition: width 0.4s ease;
+    outline: none;
+}
+
+.form-control1-dark:focus {
+    width: 150px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding-left: 10px;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-control1-dark::placeholder {
+    color: #fcf7f7;
+    font-size: 0.9rem;
+}
+
+/* ================== Authentication Buttons ================== */
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: 20px;
+}
+
+.btn-outline-light {
+    border-color: #fff;
+    color: #fff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-light:hover {
+    background-color: #fff;
+    color: #333;
+}
+
+.btn-warning {
+    background-color: var(--gold-color);
+    border-color: var(--gold-color);
+    transition: background-color 0.3s ease;
+}
+
+.btn-warning:hover {
+    background-color: var(--hover-gold);
+}
+
+/* ================== Profile Section Styling ================== */
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.profile-avatar {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border: 2px solid var(--gold-color);
+}
+
+.profile-avatar:hover {
+    border-color: #ff5722;
+    cursor: pointer;
+}
+
+.profile-section span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--light-gray);
+}
+
+/* ================== Dropdown Menu ================== */
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    width: 150px;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    color: #333;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--hover-transparent);
+    color: #000;
+}
+
+/* ================== Responsive Design ================== */
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .auth-buttons {
+        margin-top: 10px;
+        justify-content: center;
+    }
+
+    .profile-avatar {
+        width: 30px;
+        height: 30px;
+    }
+
+    .dropdown-menu {
+        width: 120px;
+    }
+
+    .form-control1-dark:focus {
+        width: 100%;
+    }
+}

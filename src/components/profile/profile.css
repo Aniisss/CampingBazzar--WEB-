@@ -1,0 +1,214 @@
+/* General Page Styling */
+.profile-page {
+  background-color: #f9f9f9; /* Light neutral background */
+  min-height: 100vh; /* Full viewport height */
+  padding: 20px 10px; /* Padding for the overall layout */
+  font-family: 'Arial', sans-serif; /* Clean and readable font */
+  animation: fadeIn 1s ease-in-out; /* Page fade-in animation */
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Profile Container */
+.profile1-container {
+  max-width: 800px; /* Centered layout with limited width */
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  overflow: hidden; /* Clean edges */
+  animation: slideIn 1s ease-in-out; /* Slide-in effect */
+}
+
+/* Slide-in animation */
+@keyframes slideIn {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Profile Header Section */
+.profile1-header {
+  background: linear-gradient(135deg, #ffd700, #ffe680); /* Gold gradient */
+  color: #333; /* Dark text for contrast */
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.profile1-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Shadow around avatar */
+  margin-bottom: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover effects */
+}
+
+.profile1-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.profile1-header h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 10px 0 5px;
+}
+
+.profile1-header p {
+  font-size: 1rem;
+  opacity: 0.85;
+  margin: 0;
+}
+
+/* Section Styling */
+.profile1-section {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.profile1-section:last-child {
+  border-bottom: none; /* Remove border for the last section */
+}
+
+.profile1-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+  border-bottom: 2px solid #ffd700; /* Accent underline */
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.profile1-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.profile1-section ul li {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: #555;
+  position: relative;
+  padding-left: 20px;
+}
+
+.profile1-section ul li::before {
+  content: "✔";
+  color: #ffd700; /* Gold checkmark */
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 1.2rem;
+}
+
+.profile1-section ul li:hover {
+  color: #333;
+  text-decoration: underline;
+  transition: color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-warning {
+  background: #ffd700;
+  color: #333;
+  border: 1px solid #ffd700;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-left: 10px;
+}
+
+.btn-warning:hover {
+  background: #ffc300;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+}
+
+.btn-outline-danger {
+  background: #fff;
+  color: #d9534f;
+  border: 1px solid #d9534f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline-danger:hover {
+  background: #d9534f;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+}
+
+/* Profile Settings Section */
+.profile1-settings {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  background-color: #f5f5f5;
+  border-top: 2px solid #eee;
+}
+
+.profile1-settings h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.profile1-settings button {
+  margin: 10px;
+  font-size: 1.1rem;
+  padding: 12px 20px;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.profile1-settings button:hover {
+  transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile1-container {
+    padding: 10px; /* Reduce padding on smaller screens */
+  }
+
+  .profile1-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .profile1-header p {
+    font-size: 0.9rem;
+  }
+
+  .profile1-section h3 {
+    font-size: 1.3rem;
+  }
+
+  .profile1-section ul li {
+    font-size: 1rem;
+  }
+}

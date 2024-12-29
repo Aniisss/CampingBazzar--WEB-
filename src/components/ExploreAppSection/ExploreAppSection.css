@@ -1,0 +1,99 @@
+.explore-app-section {
+    background: rgba(0, 0, 0, 0.5); /* Dark semi-transparent overlay for contrast */
+    background-size: cover;
+    color: white;
+    padding: 80px 30px;
+    text-align: center;
+    position: relative;
+    z-index: 1; /* Ensure it's above the image */
+  }
+  
+  .explore-app-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); /* Dark overlay for better text visibility */
+    z-index: -1; /* Keep the overlay behind content */
+  }
+  
+  .explore-app-title {
+    font-size: 3rem;
+    color: #ffd700; /* Warm gold to stand out */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6); /* Light shadow for better contrast */
+    margin-bottom: 20px;
+  }
+  
+  .explore-app-description {
+    font-size: 1.2rem;
+    color: #e6e6e6; /* Light gray for better readability */
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+    margin-bottom: 40px;
+  }
+  
+  .app-features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  
+  .feature {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .feature:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  .feature-img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .download-section {
+    margin-top: 40px;
+  }
+  
+  .download-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .download-btn {
+    background-color: #ffd700; /* Warm, golden button */
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: #1b3a3a; /* Dark green for button text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .download-btn:hover {
+    background-color: #e4b700; /* Slightly darker gold on hover */
+  }
+  
+  .download-btn img {
+    width: 30px;
+    height: auto;
+  }
+  

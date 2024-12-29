@@ -1,0 +1,149 @@
+/* General Page Layout */
+.edit-profile-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    font-family: Arial, sans-serif;
+}
+
+/* Page Header */
+.edit-profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.edit-profile-header h2 {
+    font-size: 2rem;
+    color: #333;
+}
+
+.edit-profile-header p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Form Styling */
+.edit-profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.edit-profile-form label {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.edit-profile-form input,
+.edit-profile-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+
+.edit-profile-form input:focus,
+.edit-profile-form textarea:focus {
+    outline: none;
+    border-color: #ffd700; /* Golden yellow focus effect */
+}
+
+.edit-profile-form textarea {
+    resize: vertical;
+    height: 120px;
+}
+
+/* Button Styling */
+.edit-profile-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.edit-profile-buttons .btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-profile-buttons .btn-save {
+    background-color: #ffd700;
+    color: #fff;
+}
+
+.edit-profile-buttons .btn-save:hover {
+    background-color: #ffc300;
+}
+
+.edit-profile-buttons .btn-cancel {
+    background-color: #ddd;
+    color: #333;
+}
+
+.edit-profile-buttons .btn-cancel:hover {
+    background-color: #bbb;
+}
+
+/* Profile Picture Section */
+.profile-picture-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.profile-picture-section img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffd700;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-picture-section img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-picture-section .btn-upload {
+    padding: 10px 15px;
+    background-color: #ddd;
+    color: #333;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-picture-section .btn-upload:hover {
+    background-color: #bbb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .edit-profile-container {
+        padding: 15px;
+    }
+
+    .edit-profile-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .profile-picture-section img {
+        width: 60px;
+        height: 60px;
+    }
+}
