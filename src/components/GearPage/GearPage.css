@@ -504,8 +504,8 @@ body {
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid #405d27;
-  border-color: #405d27 transparent #405d27 transparent;
+  border: 6px solid #e6c200;
+  border-color: #e6c200 transparent #e6c200 transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {
@@ -515,4 +515,9 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.gear-card-created {
+  font-size: 0.8rem;
+  color: #777;
 }

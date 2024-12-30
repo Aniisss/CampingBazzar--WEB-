@@ -7,7 +7,6 @@ const GearPage = () => {
   const { state } = useLocation();
   const initialSearchQuery = state?.searchQuery || "";
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
-  console.log(" searchQuery:" + searchQuery);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOption, setSortOption] = useState("name");
   const [hoveredItem, setHoveredItem] = useState(null);
@@ -21,10 +20,11 @@ const GearPage = () => {
   const formatTimeAgo = (timestamp) => {
     const now = new Date();
     const createdAt = new Date(timestamp * 1000); // Convert seconds to milliseconds
-    const diffInSeconds = Math.floor((now - createdAt) / 1000);
+    const diffInSeconds = Math.floor((now - createdAt) / 1000) + 1250;
+    console.log(diffInSeconds);
 
     if (diffInSeconds < 60) {
-      return `${diffInSeconds} second${diffInSeconds === 1 ? "" : "s"} ago`;
+      return "Now";
     }
 
     const diffInMinutes = Math.floor(diffInSeconds / 60);
@@ -58,7 +58,7 @@ const GearPage = () => {
           name: item.title,
           category: item.category,
           imageUrl: item.image,
-          description: item.description,
+          description: item.description.slice(0, 250) + "...",
           price: item.price,
           seller: {
             name: item.userName,
@@ -107,17 +107,16 @@ const GearPage = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const { latitude, longitude } = position.coords;
           setNewGear((prevGear) => ({
             ...prevGear,
             location: {
-              latitude,
-              longitude,
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
             },
           }));
         },
         (error) => {
-          console.error("Error fetching location:", error);
+          console.error("Error getting location:", error);
         }
       );
     } else {
@@ -247,9 +246,9 @@ const GearPage = () => {
           className="gear-category-filter"
         >
           <option value="All">All Categories</option>
-          <option value="Clothing">Clothing</option>
-          <option value="Shelter">Shelter</option>
-          <option value="Sleep">Sleep</option>
+          <option value="Sleeping Bags">Sleeping Bags</option>
+          <option value="Tents">Tents</option>
+          <option value="Chairs">Chairs</option>
           <option value="Cooking">Cooking</option>
         </select>
         <select
@@ -283,6 +282,7 @@ const GearPage = () => {
               <div className="gear-card-content">
                 <h3>{item.name}</h3>
                 <p className="gear-category">{item.category}</p>
+                <p className="gear-card-created"> Created: {item.created}</p>
               </div>
               {hoveredItem === item.id && (
                 <div className="hover-details">
@@ -334,11 +334,16 @@ const GearPage = () => {
         <button
           className="add-gear-button"
           onClick={() => {
-            const token = JSON.parse(localStorage.getItem("user")).token;
-            if (!token) {
+            try {
+              const token = JSON.parse(localStorage.getItem("user")).token;
+              if (!token) {
+                navigate("/login");
+              }
+            } catch (error) {
               alert("Please log in to submit gear.");
               navigate("/login");
             }
+
             setIsPopupOpen(true);
           }}
         >
@@ -371,9 +376,9 @@ const GearPage = () => {
                   onChange={handleInputChange}
                   required
                 >
-                  <option value="Shelter">Clothing</option>
-                  <option value="Tent">Tent</option>
-                  <option value="Sleep">Sleep</option>
+                  <option value="Sleeping Bags">Sleeping Bags</option>
+                  <option value="Tents">Tents</option>
+                  <option value="Chairs">Chairs</option>
                   <option value="Cooking">Cooking</option>
                   <option value="Other">Other</option>
                 </select>
