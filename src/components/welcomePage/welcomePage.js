@@ -18,7 +18,7 @@ const pageVariants = {
   animate: {
     opacity: 1,
     transition: {
-      duration: 0.8,
+      duration: 2,
       staggerChildren: 0.2,
     },
   },
@@ -77,7 +77,7 @@ function WelcomePage({ onExploreClick }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 delay: 0.5,
-                duration: 0.8,
+                duration: 2,
                 ease: "easeOut",
               }}
             >
@@ -88,14 +88,14 @@ function WelcomePage({ onExploreClick }) {
               className="features-container"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
+              transition={{ delay: 2, duration: 2 }}
             >
               {FEATURES.map((feature, index) => (
                 <FeatureCard
                   key={feature.title}
                   icon={FEATURE_ICONS[feature.title]}
                   {...feature}
-                  delay={0.8 + index * 0.2}
+                  delay={2 + index * 0.2}
                 />
               ))}
             </motion.div>
