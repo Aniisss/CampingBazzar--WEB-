@@ -14,6 +14,7 @@ import {
   FormControl,
   IconButton,
 } from "@mui/material";
+import { motion } from "motion/react";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
@@ -35,7 +36,10 @@ function CommunityForum() {
       id: 2,
       title: "Best Camping Gear",
       content: "I love my portable stove. It's a game-changer!",
-      comments: ["Totally agree! Portable stoves are essential.", "Which brand do you use?"],
+      comments: [
+        "Totally agree! Portable stoves are essential.",
+        "Which brand do you use?",
+      ],
       avatarUrl: "/assets/user-image.png",
       userName: "Jane Smith",
       reactions: { like: 15, love: 8, haha: 2 },
@@ -44,9 +48,19 @@ function CommunityForum() {
 
   const [newPost, setNewPost] = useState({ title: "", content: "" });
   const [commentInput, setCommentInput] = useState("");
-  const [filter, setFilter] = useState(""); // For filtering posts
+  const [filter, setFilter] = useState(""); // For sorting/filtering posts
   const [searchQuery, setSearchQuery] = useState(""); // For searching posts
+  const [showComments, setShowComments] = useState({}); // For toggling comments visibility
 
+  // Toggle visibility of comments for a specific post
+  const toggleCommentVisibility = (postId) => {
+    setShowComments((prev) => ({
+      ...prev,
+      [postId]: !prev[postId],
+    }));
+  };
+
+  // Add a new post
   const handlePostSubmit = (e) => {
     e.preventDefault();
     setPosts([
@@ -63,6 +77,7 @@ function CommunityForum() {
     setNewPost({ title: "", content: "" });
   };
 
+  // Add a new comment to a specific post
   const handleCommentSubmit = (postId) => {
     setPosts(
       posts.map((post) =>
@@ -74,24 +89,36 @@ function CommunityForum() {
     setCommentInput("");
   };
 
+  // Update reactions (like, love, haha) for a specific post
   const handleReaction = (postId, type) => {
     setPosts(
       posts.map((post) =>
         post.id === postId
-          ? { ...post, reactions: { ...post.reactions, [type]: post.reactions[type] + 1 } }
+          ? {
+              ...post,
+              reactions: {
+                ...post.reactions,
+                [type]: post.reactions[type] + 1,
+              },
+            }
           : post
       )
     );
   };
 
-  const filteredPosts = posts.filter((post) => {
-    if (filter === "mostRecent") {
-      return posts.sort((a, b) => b.id - a.id);
-    } else if (filter === "mostComments") {
-      return posts.sort((a, b) => b.comments.length - a.comments.length);
-    }
-    return post.title.toLowerCase().includes(searchQuery.toLowerCase());
-  });
+  // Filter and sort posts based on search query or filters
+  const filteredPosts = posts
+    .filter((post) =>
+      searchQuery
+        ? post.title.toLowerCase().includes(searchQuery.toLowerCase())
+        : true
+    )
+    .sort((a, b) => {
+      if (filter === "mostRecent") return b.id - a.id;
+      if (filter === "mostComments")
+        return b.comments.length - a.comments.length;
+      return 0; // No sorting by default
+    });
 
   return (
     <div className="community-forum">
@@ -103,32 +130,46 @@ function CommunityForum() {
         </Typography>
 
         {/* Filters and Search */}
-        <Box className="filter-search">
-          <FormControl variant="outlined" size="small" className="filter">
+        <Box
+          className="filter-search"
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 4,
+          }}
+        >
+          <FormControl variant="outlined" size="small">
             <InputLabel>Filter</InputLabel>
             <Select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               label="Filter"
+              sx={{ width: 150 }}
             >
               <MenuItem value="">None</MenuItem>
               <MenuItem value="mostRecent">Most Recent</MenuItem>
               <MenuItem value="mostComments">Most Comments</MenuItem>
             </Select>
           </FormControl>
-
           <TextField
             variant="outlined"
             size="small"
             placeholder="Search posts..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-bar"
+            sx={{ flex: 1, marginLeft: 2 }}
           />
         </Box>
 
         {/* New Post Form */}
-        <form onSubmit={handlePostSubmit} className="post-form">
+        <motion.form
+          onSubmit={handlePostSubmit}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          className="post-form"
+        >
           <TextField
             label="Post Title"
             variant="outlined"
@@ -148,106 +189,192 @@ function CommunityForum() {
             }
             required
             multiline
-            rows={4}
+            rows={3}
             sx={{ marginBottom: 2 }}
           />
-          <Button variant="contained" color="primary" type="submit" fullWidth>
+          <motion.button
+            type="submit"
+            className="butt"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             Post
-          </Button>
-        </form>
+          </motion.button>
+        </motion.form>
 
         {/* Posts Section */}
-        <div className="posts">
+        <div
+          className="posts"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "20px",
+          }}
+        >
           {filteredPosts.map((post) => (
-            <Card
-              key={post.id}
+            <motion.div
               className="post-card"
-              sx={{ marginBottom: 3 }}
-              data-aos="fade-up" // Animation on scroll
+              key={post.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
             >
-              <CardContent>
+              <Card
+                sx={{ padding: 2, position: "relative", overflow: "hidden" }}
+              >
                 <Box
-                  sx={{ display: "flex", alignItems: "center", marginBottom: 2 }}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: 2,
+                  }}
                 >
                   <Avatar src={post.avatarUrl} alt="User Avatar" />
                   <Box sx={{ marginLeft: 2 }}>
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                       {post.userName}
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ fontStyle: "italic" }}
-                    >
+                    <Typography variant="body2" color="text.secondary">
                       {post.title}
                     </Typography>
                   </Box>
                 </Box>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    maxHeight: "50px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
                   {post.content}
                 </Typography>
+                <Button
+                  variant="text"
+                  size="small"
+                  sx={{ marginTop: 1, color: "#3f51b5" }}
+                >
+                  Read More
+                </Button>
 
                 {/* Reactions Section */}
-                <Box sx={{ display: "flex", marginTop: 2, gap: 1 }}>
-                  <IconButton
-                    onClick={() => handleReaction(post.id, "like")}
-                    color="primary"
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 2,
+                  }}
+                >
+                  {/* Reactions Container */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                      fontSize: "1rem",
+                    }}
                   >
-                    <ThumbUpIcon />
-                  </IconButton>
-                  <Typography>{post.reactions.like}</Typography>
-                  <IconButton
-                    onClick={() => handleReaction(post.id, "love")}
-                    sx={{ color: "red" }}
+                    <IconButton
+                      onClick={() => handleReaction(post.id, "like")}
+                      sx={{
+                        color: "primary.main", // Uses theme's primary color
+                        transition: "color 0.3s ease", // Smooth color transition
+                        "&:hover": {
+                          color: "primary.dark", // Darker shade on hover
+                        },
+                      }}
+                    >
+                      <ThumbUpIcon />
+                    </IconButton>
+                    <Typography>{post.reactions.like}</Typography>
+
+                    <IconButton
+                      onClick={() => handleReaction(post.id, "love")}
+                      sx={{
+                        color: "red",
+                        transition: "transform 0.2s ease", // Add scale effect
+                        "&:hover": {
+                          transform: "scale(1.2)", // Enlarge on hover
+                        },
+                      }}
+                    >
+                      <FavoriteIcon />
+                    </IconButton>
+                    <Typography>{post.reactions.love}</Typography>
+
+                    <IconButton
+                      onClick={() => handleReaction(post.id, "haha")}
+                      sx={{
+                        color: "gold",
+                        transition: "transform 0.2s ease",
+                        "&:hover": {
+                          transform: "rotate(-10deg)", // Tilt on hover for fun effect
+                        },
+                      }}
+                    >
+                      <EmojiEmotionsIcon />
+                    </IconButton>
+                    <Typography>{post.reactions.haha}</Typography>
+                  </Box>
+
+                  {/* Comments Button */}
+                  <Button
+                    size="small"
+                    onClick={() =>
+                      setShowComments((prev) => ({
+                        ...prev,
+                        [post.id]: !prev[post.id],
+                      }))
+                    }
+                    sx={{
+                      color: "primary.main",
+                      fontWeight: "bold",
+                      transition: "background-color 0.3s ease, color 0.3s ease",
+                      "&:hover": {
+                        backgroundColor: "primary.light",
+                        color: "white",
+                      },
+                    }}
                   >
-                    <FavoriteIcon />
-                  </IconButton>
-                  <Typography>{post.reactions.love}</Typography>
-                  <IconButton
-                    onClick={() => handleReaction(post.id, "haha")}
-                    sx={{ color: "gold" }}
-                  >
-                    <EmojiEmotionsIcon />
-                  </IconButton>
-                  <Typography>{post.reactions.haha}</Typography>
+                    {showComments[post.id] ? "Hide Comments" : "View Comments"}
+                  </Button>
                 </Box>
 
-                {/* Comments Section */}
-                <Box sx={{ marginTop: 3 }}>
-                  <Typography variant="subtitle1" sx={{ marginBottom: 1 }}>
-                    Comments:
-                  </Typography>
-                  <div className="comments">
+                {/* Collapsible Comments */}
+                {showComments[post.id] && (
+                  <Box sx={{ marginTop: 2 }}>
                     {post.comments.map((comment, index) => (
                       <Typography
                         key={index}
                         variant="body2"
-                        className="comment"
+                        sx={{ marginBottom: 1 }}
                       >
                         {comment}
                       </Typography>
                     ))}
-                  </div>
-                  <Box sx={{ display: "flex", marginTop: 2 }}>
                     <TextField
                       variant="outlined"
                       size="small"
-                      fullWidth
                       placeholder="Write a comment..."
                       value={commentInput}
                       onChange={(e) => setCommentInput(e.target.value)}
-                      sx={{ marginRight: 1 }}
+                      fullWidth
+                      sx={{ marginTop: 1 }}
                     />
                     <Button
                       variant="contained"
+                      size="small"
+                      sx={{ marginTop: 1 }}
                       onClick={() => handleCommentSubmit(post.id)}
                     >
                       Comment
                     </Button>
                   </Box>
-                </Box>
-              </CardContent>
-            </Card>
+                )}
+              </Card>
+            </motion.div>
           ))}
         </div>
       </Container>

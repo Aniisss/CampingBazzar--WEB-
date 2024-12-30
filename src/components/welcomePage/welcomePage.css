@@ -1,79 +1,144 @@
-/* Overall Page Styles */
+/* Base Styles */
 .welcome-page {
-  height: 80vh; /* Full viewport height */
-  background-size: cover; /* Ensures the image covers the entire section */
-  position: relative; /* To position the overlay */
-  display: flex;
-  align-items: center; /* Center the content vertically */
-  justify-content: center; /* Center the content horizontally */
+  min-height: 100vh;
+  background: linear-gradient(rgba(44, 41, 41, 0), rgba(39, 39, 39, 0.7));
+  position: relative;
   color: white;
-  padding: 0;
-  margin-top: 27vh;
+  overflow: hidden;
 }
 
-/* Dark Overlay Effect */
-.welcome-page .overlay {
-  position: absolute; /* Overlay over the background */
+.background-slider {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: transparent; /* Dark overlay */
- 
+  background-size: cover;
+  background-position: center;
+  z-index: -5;
 }
 
-/* Welcome Content */
+.content-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.4);
+}
+
 .welcome-content {
-  /* Ensure content is above the overlay */
-  text-align: center; /* Center the text */
-  padding: 20px 20px; /* Add padding for small screens */
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+  padding: 2rem;
 }
 
-.welcome-content h1 {
-  font-size: 3rem;
+/* Title Styles */
+.title-container h1 {
+  font-size: 4rem;
   font-weight: bold;
-  margin-bottom: 20px;
   color: #ffd700;
-  font-family: 'Georgia', 'Times New Roman', Times, serif;
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8); /* Glow effect for the text */
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
-.welcome-content p {
+.tagline {
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-bottom: 3rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Features Section */
+.features-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  color: #ffd700;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
   font-size: 1.5rem;
-  margin-bottom: 30px;
-  color: #ddd;
+  margin-bottom: 1rem;
+  color: #ffd700;
 }
 
-/* Buttons */
-.welcome-content .buttons .btn-warning {
-  background-color: #ffc107;
+.feature-card p {
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+/* CTA Buttons */
+.cta-container {
+  margin-top: 3rem;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
+  border-radius: 50px;
   border: none;
-  font-size: 1.25rem;
-  font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-weight: 600;
 }
 
-.welcome-content .buttons .btn-outline-light {
-  font-size: 1.25rem;
-  font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 50px;
+.btn-primary {
+  background: #ffd700;
+  color: #000;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid #ffffff;
+  color: #ffffff;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .welcome-content h1 {
+  .title-container h1 {
     font-size: 2.5rem;
   }
 
-  .welcome-content p {
-    font-size: 1.25rem;
+  .tagline {
+    font-size: 1.3rem;
   }
 
-  .welcome-content .buttons .btn-warning,
-  .welcome-content .buttons .btn-outline-light {
-    font-size: 1rem;
-    padding: 8px 16px;
+  .features-container {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    max-width: 300px;
   }
 }
