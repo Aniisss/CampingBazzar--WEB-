@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa"; // For the search icon
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import "./header.css"; // Header styling
 
 function Header() {
@@ -8,6 +9,7 @@ function Header() {
   const [user, setUser] = useState({});
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
@@ -37,10 +39,14 @@ function Header() {
     setSearchQuery(e.target.value);
   };
 
+  // When current location is /gears, refresh the page with the search query prop
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    console.log("Search for:", searchQuery);
-    // Add logic to handle search functionality here
+    navigate("/gears", {
+      state: {
+        searchQuery: searchQuery,
+      },
+    });
   };
 
   return (

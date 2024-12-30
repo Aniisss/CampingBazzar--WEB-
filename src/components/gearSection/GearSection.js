@@ -15,31 +15,33 @@ function GearSection() {
     const now = new Date();
     const createdAt = new Date(timestamp * 1000); // Convert seconds to milliseconds
     const diffInSeconds = Math.floor((now - createdAt) / 1000);
-  
+
     if (diffInSeconds < 60) {
-      return `${diffInSeconds} second${diffInSeconds === 1 ? '' : 's'} ago`;
+      return `${diffInSeconds} second${diffInSeconds === 1 ? "" : "s"} ago`;
     }
-  
+
     const diffInMinutes = Math.floor(diffInSeconds / 60);
     if (diffInMinutes < 60) {
-      return `${diffInMinutes} minute${diffInMinutes === 1 ? '' : 's'} ago`;
+      return `${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`;
     }
-  
+
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24) {
-      return `${diffInHours} hour${diffInHours === 1 ? '' : 's'} ago`;
+      return `${diffInHours} hour${diffInHours === 1 ? "" : "s"} ago`;
     }
-  
+
     const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays} day${diffInDays === 1 ? '' : 's'} ago`;
+    return `${diffInDays} day${diffInDays === 1 ? "" : "s"} ago`;
   };
 
   useEffect(() => {
     const fetchGearItems = async () => {
       try {
-        const response = await fetch("http://20.64.237.50:3000/api/items/getItems");
+        const response = await fetch(
+          "http://20.64.237.50:3000/api/items/getItems"
+        );
         const data = await response.json();
-  
+
         const transformedItems = data.items.map((item, index) => ({
           id: item.itemID,
           name: item.title,
@@ -53,14 +55,14 @@ function GearSection() {
           },
           created: formatTimeAgo(item.createdAt._seconds),
         }));
-  
+
         const firstFiveItems = transformedItems.slice(0, 5);
         setGearItems(firstFiveItems);
       } catch (error) {
         console.error("Error fetching gear items:", error);
       }
     };
-  
+
     fetchGearItems();
   }, []);
 
@@ -82,25 +84,38 @@ function GearSection() {
         </p>
 
         <div className="gear-items">
-          {gearItems.map((item) => (
-            <div key={item.id} className="gear-card">
-              <img
-                src={item.imageUrl}
-                alt={item.name}
-                className="gear-card-image"
-              />
-              <h3 className="gear-card-title">{item.name}</h3>
-              <p className="gear-card-category">{item.category}</p>
-              <p className="gear-card-description">{item.description}</p>
-              <p className="gear-card-created"> Created: {item.created}</p>
-              <button
-                className="gear-card-details-btn"
-                onClick={() => handleCardDetails(item)}
-              >
-                Learn More
-              </button>
+          {gearItems.length > 0 ? (
+            gearItems.map((item) => (
+              <div key={item.id} className="gear-card">
+                <img
+                  src={item.imageUrl}
+                  alt={item.name}
+                  className="gear-card-image"
+                />
+                <h3 className="gear-card-title">{item.name}</h3>
+                <p className="gear-card-category">{item.category}</p>
+                <p className="gear-card-description">{item.description}</p>
+                <p className="gear-card-created"> Created: {item.created}</p>
+                <button
+                  className="gear-card-details-btn"
+                  onClick={() => handleCardDetails(item)}
+                >
+                  Learn More
+                </button>
+              </div>
+            ))
+          ) : (
+            <div
+              className="loading-spinner"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div className="lds-dual-ring"></div>
             </div>
-          ))}
+          )}
         </div>
 
         {selectedItem && (

@@ -2,10 +2,12 @@ import React, { useState, useMemo } from "react";
 import "./GearPage.css";
 import Header from "../header/header";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
 const GearPage = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const { state } = useLocation();
+  const initialSearchQuery = state?.searchQuery || "";
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
+  console.log(" searchQuery:" + searchQuery);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOption, setSortOption] = useState("name");
   const [hoveredItem, setHoveredItem] = useState(null);
@@ -42,9 +44,14 @@ const GearPage = () => {
   useEffect(() => {
     const fetchGearItems = async () => {
       try {
-        const response = await fetch(
-          "http://20.64.237.50:3000/api/items/getItems"
-        );
+        let response;
+        if (searchQuery !== "") {
+          response = await fetch(
+            `http://20.64.237.50:3000/api/items/search?keyword=${searchQuery}`
+          );
+        } else {
+          response = await fetch("http://20.64.237.50:3000/api/items/getItems");
+        }
         const data = await response.json();
         const transformedItems = data.items.map((item, index) => ({
           id: item.itemID,
@@ -68,7 +75,7 @@ const GearPage = () => {
 
     fetchGearItems();
     setUserArticles([]);
-  }, [refresh]);
+  }, [refresh, searchQuery]);
 
   // Added state for popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -123,7 +130,6 @@ const GearPage = () => {
     e.preventDefault();
     setIsSubmitting(true);
     const token = JSON.parse(localStorage.getItem("user")).token;
-    console.log("Token:", token);
     if (!token) {
       alert("Please log in to submit gear.");
       navigate("/login");
@@ -189,7 +195,10 @@ const GearPage = () => {
   };
 
   // Handler Functions
-  const handleSearchChange = (e) => setSearchQuery(e.target.value);
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setRefresh(!refresh);
+  };
   const handleCategoryChange = (e) => setSelectedCategory(e.target.value);
   const handleSortChange = (e) => setSortOption(e.target.value);
   const handleCardClick = (item) => setSelectedItem(item);
@@ -261,7 +270,6 @@ const GearPage = () => {
               key={item.id}
               className="gear-card"
               onMouseEnter={() => {
-                console.log(item);
                 setHoveredItem(item.id);
               }}
               onMouseLeave={() => setHoveredItem(null)}
