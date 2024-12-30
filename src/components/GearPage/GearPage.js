@@ -1,15 +1,8 @@
 import React, { useState, useMemo } from "react";
 import "./GearPage.css";
 import Header from "../header/header";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import app from "../../firebaseConfig"; //
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-const storage = getStorage(app);
-const firestore = getFirestore(app);
 
 const GearPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,6 +12,8 @@ const GearPage = () => {
   const [userArticles, setUserArticles] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [gearItems, setGearItems] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
 
   const formatTimeAgo = (timestamp) => {
@@ -51,14 +46,13 @@ const GearPage = () => {
           "http://20.64.237.50:3000/api/items/getItems"
         );
         const data = await response.json();
-        console.log(data);
-
         const transformedItems = data.items.map((item, index) => ({
           id: item.itemID,
           name: item.title,
           category: item.category,
           imageUrl: item.image,
           description: item.description,
+          price: item.price,
           seller: {
             name: item.userName,
             contact: item.email,
@@ -74,7 +68,7 @@ const GearPage = () => {
 
     fetchGearItems();
     setUserArticles([]);
-  }, []);
+  }, [refresh]);
 
   // Added state for popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -84,9 +78,11 @@ const GearPage = () => {
     price: "",
     imageFile: null,
     category: "",
-    location: "",
+    location: {
+      latitude: 0,
+      longitude: 0,
+    },
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -107,7 +103,10 @@ const GearPage = () => {
           const { latitude, longitude } = position.coords;
           setNewGear((prevGear) => ({
             ...prevGear,
-            location: `Latitude: ${latitude}, Longitude: ${longitude}`,
+            location: {
+              latitude,
+              longitude,
+            },
           }));
         },
         (error) => {
@@ -123,7 +122,8 @@ const GearPage = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const token = localStorage.getItem("token");
+    const token = JSON.parse(localStorage.getItem("user")).token;
+    console.log("Token:", token);
     if (!token) {
       alert("Please log in to submit gear.");
       navigate("/login");
@@ -144,10 +144,10 @@ const GearPage = () => {
           body: formData,
         }
       );
-      const data = response.json();
+      const data = await response.json();
       const imageUrl = data.imageUrl;
 
-      const response2 = await fetch(
+      const grear_response = await fetch(
         "http://20.64.237.50:3000/api/items/createItem",
         {
           method: "POST",
@@ -164,14 +164,12 @@ const GearPage = () => {
             location: newGear.location,
           }),
         }
-      ).then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Failed to submit gear.");
-        }
-      })
-      
+      );
+
+      if (!grear_response.ok) {
+        throw new Error("Failed to submit gear.");
+      }
+
       alert("Gear submitted successfully!");
       setIsPopupOpen(false);
       setNewGear({
@@ -186,8 +184,8 @@ const GearPage = () => {
       console.error("Error submitting gear:", error);
       alert("Failed to submit gear. Please try again.");
     }
-
     setIsSubmitting(false);
+    setRefresh(!refresh);
   };
 
   // Handler Functions
@@ -218,8 +216,6 @@ const GearPage = () => {
   return (
     <div>
       <Header />
-
-      {/* Header Section */}
       <header className="gear-header">
         <h1>Explore Camping Gear</h1>
         <p>
@@ -242,6 +238,7 @@ const GearPage = () => {
           className="gear-category-filter"
         >
           <option value="All">All Categories</option>
+          <option value="Clothing">Clothing</option>
           <option value="Shelter">Shelter</option>
           <option value="Sleep">Sleep</option>
           <option value="Cooking">Cooking</option>
@@ -258,32 +255,48 @@ const GearPage = () => {
 
       {/* Gear Items Grid */}
       <section className="gear-grid">
-        {filteredAndSortedItems.map((item) => (
-          <div
-            key={item.id}
-            className="gear-card"
-            onMouseEnter={() => setHoveredItem(item.id)}
-            onMouseLeave={() => setHoveredItem(null)}
-            onClick={() => handleCardClick(item)}
-          >
-            <img
-              src={item.imageUrl}
-              alt={item.name}
-              className="gear-card-image"
-            />
-            <div className="gear-card-content">
-              <h3>{item.name}</h3>
-              <p className="gear-category">{item.category}</p>
-            </div>
-            {hoveredItem === item.id && (
-              <div className="hover-details">
-                <p>{item.description}</p>
-                <p className="price">Price: ${item.price}</p>
-                <button className="quick-buy-button">Quick Buy</button>
+        {filteredAndSortedItems.length > 0 ? (
+          filteredAndSortedItems.map((item) => (
+            <div
+              key={item.id}
+              className="gear-card"
+              onMouseEnter={() => {
+                console.log(item);
+                setHoveredItem(item.id);
+              }}
+              onMouseLeave={() => setHoveredItem(null)}
+              onClick={() => handleCardClick(item)}
+            >
+              <img
+                src={item.imageUrl}
+                alt={item.name}
+                className="gear-card-image"
+              />
+              <div className="gear-card-content">
+                <h3>{item.name}</h3>
+                <p className="gear-category">{item.category}</p>
               </div>
-            )}
+              {hoveredItem === item.id && (
+                <div className="hover-details">
+                  <p>{item.description}</p>
+                  <p className="price">{item.price} Tnd</p>
+                  <button className="quick-buy-button">Quick Buy</button>
+                </div>
+              )}
+            </div>
+          ))
+        ) : (
+          <div
+            className="loading-spinner"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div className="lds-dual-ring"></div>
           </div>
-        ))}
+        )}
       </section>
 
       {/* Detailed View Modal */}
@@ -312,7 +325,14 @@ const GearPage = () => {
       <section className="add-gear-section">
         <button
           className="add-gear-button"
-          onClick={() => setIsPopupOpen(true)}
+          onClick={() => {
+            const token = JSON.parse(localStorage.getItem("user")).token;
+            if (!token) {
+              alert("Please log in to submit gear.");
+              navigate("/login");
+            }
+            setIsPopupOpen(true);
+          }}
         >
           Add New Gear
         </button>
@@ -337,6 +357,18 @@ const GearPage = () => {
                   onChange={handleInputChange}
                   required
                 />
+                <select
+                  name="category"
+                  value={newGear.category}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="Shelter">Clothing</option>
+                  <option value="Tent">Tent</option>
+                  <option value="Sleep">Sleep</option>
+                  <option value="Cooking">Cooking</option>
+                  <option value="Other">Other</option>
+                </select>
                 <textarea
                   name="description"
                   placeholder="Description"
@@ -377,7 +409,10 @@ const GearPage = () => {
                   Add Location
                 </button>
                 {newGear.location && (
-                  <p className="location-display">{newGear.location}</p>
+                  <p className="location-display">
+                    latitude {newGear.location.latitude},logitude{" "}
+                    {newGear.location.longitude}
+                  </p>
                 )}
                 <button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? "Submitting..." : "Submit"}
