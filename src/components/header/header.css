@@ -13,7 +13,7 @@
 /* Header Background and Layout */
 .header {
     background-color: var(--dark-teal);
-    padding: 15px 0;
+    padding: 20px 0;
     backdrop-filter: blur(10px);
     position: relative;
 }
@@ -179,6 +179,7 @@
     padding: 10px 0;
     display: flex;
     flex-direction: column;
+    z-index: -1;
 }
 
 .dropdown-item {
@@ -187,6 +188,7 @@
     font-size: 0.9rem;
     text-decoration: none;
     transition: background-color 0.3s ease;
+    z-index: 2;
 }
 
 .dropdown-item:hover {

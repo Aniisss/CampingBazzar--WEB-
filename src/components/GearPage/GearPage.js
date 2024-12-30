@@ -77,6 +77,8 @@ const GearPage = () => {
     setUserArticles([]);
   }, [refresh, searchQuery]);
 
+  const [favorites, setFavorites] = useState([]);
+  const [activeTab, setActiveTab] = useState("favorites");
   // Added state for popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [newGear, setNewGear] = useState({
@@ -94,6 +96,20 @@ const GearPage = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewGear((prevGear) => ({ ...prevGear, [name]: value }));
+  };
+  const handleAddToFavorites = (item) => {
+    setFavorites((prevFavorites) => {
+      // Check if item already exists in favorites
+      const isAlreadyFavorite = prevFavorites.some(
+        (favorite) => favorite.id === item.id
+      );
+      if (isAlreadyFavorite) {
+        alert("This item is already in your favorites!");
+        return prevFavorites; // No duplicate entries
+      }
+
+      return [...prevFavorites, item]; // Add the new favorite
+    });
   };
 
   // Handle file input change
@@ -183,7 +199,10 @@ const GearPage = () => {
         price: "",
         imageFile: null,
         category: "",
-        location: "",
+        location: {
+          latitude: 0,
+          longitude: 0,
+        },
       });
     } catch (error) {
       console.error("Error submitting gear:", error);
@@ -305,11 +324,59 @@ const GearPage = () => {
             <div className="lds-dual-ring"></div>
           </div>
         )}
+        {filteredAndSortedItems.map((item) => (
+          <motion.div
+            key={item.id}
+            className="gear-card"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ scale: 1.05 }}
+            onMouseEnter={() => setHoveredItem(item.id)}
+            onMouseLeave={() => setHoveredItem(null)}
+            onClick={() => handleCardClick(item)}
+          >
+            <img
+              src={item.imageUrl}
+              alt={item.name}
+              className="gear-card-image"
+            />
+            <div className="gear-card-content">
+              <h3>{item.name}</h3>
+              <p className="gear-category">{item.category}</p>
+            </div>
+            {hoveredItem === item.id && (
+              <div className="hover-details">
+                <p>{item.description}</p>
+                <p className="price">Price: ${item.price}</p>
+                <button className="quick-buy-button">Quick Buy</button>
+              </div>
+            )}
+            {/* Like Button */}
+            <motion.button
+              className="like-button"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent card click
+                handleAddToFavorites(item);
+              }}
+              whileHover={{ scale: 1.2 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              ❤️
+            </motion.button>
+          </motion.div>
+        ))}
       </section>
 
       {/* Detailed View Modal */}
       {selectedItem && (
-        <div className="gear-modal">
+        <motion.div
+          className="gear-modal"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <div className="gear-modal-content">
             <span className="gear-modal-close" onClick={closeModal}>
               &times;
@@ -326,7 +393,7 @@ const GearPage = () => {
             <p className="seller">Seller: {selectedItem.seller}</p>
             <button className="quick-buy-button">Quick Buy</button>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Add Gear Section */}
@@ -435,23 +502,82 @@ const GearPage = () => {
           </div>
         )}
       </section>
-
-      {/* Community Offers Section */}
-      <section className="community-offers">
-        <h2>Community Offers</h2>
-        <div className="community-articles">
-          {userArticles.map((article, index) => (
-            <div key={index} className="community-article">
-              <img src={article.imageUrl} alt={article.title} />
-              <div>
-                <h3>{article.title}</h3>
-                <p>{article.description}</p>
-                <p className="price">Price: ${article.price}</p>
-              </div>
-            </div>
-          ))}
+      <div className="tabbed-interface">
+        {/* Tabs */}
+        <div className="tabs">
+          <button
+            className={`tab-button ${
+              activeTab === "favorites" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("favorites")}
+          >
+            Your Favorites
+          </button>
+          <button
+            className={`tab-button ${activeTab === "offers" ? "active" : ""}`}
+            onClick={() => setActiveTab("offers")}
+          >
+            Community Offers
+          </button>
         </div>
-      </section>
+
+        {/* Tab Content with Enhanced Transition */}
+        <motion.div
+          className="tab-content"
+          key={activeTab} // Important to trigger animation when tab changes
+          initial={{ opacity: 0, x: 50 }} // Initial state with slide-in effect
+          animate={{ opacity: 1, x: 0 }} // Animate to full opacity and no offset
+          exit={{ opacity: 0, x: -50 }} // Slide out to the left when exiting
+          transition={{
+            opacity: { duration: 0.5 },
+            x: { type: "spring", stiffness: 300, damping: 25 },
+          }}
+        >
+          {activeTab === "favorites" && (
+            <section className="favorites-section">
+              <h2>Your Favorites</h2>
+              {favorites.length === 0 ? (
+                <p>You haven't added any favorites yet.</p>
+              ) : (
+                <div className="favorites-grid">
+                  {favorites.map((favorite) => (
+                    <div key={favorite.id} className="gear-card">
+                      <img
+                        src={favorite.imageUrl}
+                        alt={favorite.name}
+                        className="gear-card-image"
+                      />
+                      <div className="gear-card-content">
+                        <h3>{favorite.name}</h3>
+                        <p className="gear-category">{favorite.category}</p>
+                        <p className="price">Price: ${favorite.price}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
+
+          {activeTab === "offers" && (
+            <section className="community-offers">
+              <h2>Community Offers</h2>
+              <div className="community-articles">
+                {userArticles.map((article, index) => (
+                  <div key={index} className="community-article">
+                    <img src={article.imageUrl} alt={article.title} />
+                    <div>
+                      <h3>{article.title}</h3>
+                      <p>{article.description}</p>
+                      <p className="price">Price: ${article.price}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </motion.div>
+      </div>
     </div>
   );
 };
