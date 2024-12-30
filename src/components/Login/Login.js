@@ -55,6 +55,7 @@ const Login = () => {
         JSON.stringify({
           username: data.user.userName || "User",
           email: data.user.email,
+          id: data.user.userID,
           token: token,
           avatarUrl:
             "https://pics.craiyon.com/2023-11-26/oMNPpACzTtO5OVERUZwh3Q.webp",

@@ -94,7 +94,9 @@ function GearSection() {
                 />
                 <h3 className="gear-card-title">{item.name}</h3>
                 <p className="gear-card-category">{item.category}</p>
-                <p className="gear-card-description">{item.description}</p>
+                <p className="gear-card-description">
+                  {item.description.slice(0, 100)}...
+                </p>
                 <p className="gear-card-created"> Created: {item.created}</p>
                 <button
                   className="gear-card-details-btn"
@@ -134,7 +136,7 @@ function GearSection() {
                 Category: {selectedItem.category}
               </p>
               <p className="gear-modal-description">
-                {selectedItem.description}
+                {selectedItem.description.slice(0, 100)}...
               </p>
               <div className="gear-seller-info">
                 <h4>Seller Information:</h4>

@@ -39,6 +39,10 @@
   text-align: center;
   width: 230px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column; /* Stack items from bottom going up */
+  align-items: center; /* Center items horizontally */
+  justify-content: flex-end;
 }
 
 .gear-card:hover {
@@ -48,6 +52,8 @@
 
 .gear-card-image {
   width: 100%;
+  max-width: 200px;
+  max-height: 200px;
   height: auto;
   border-radius: 8px;
   margin-bottom: 15px;
@@ -66,6 +72,7 @@
 
 .gear-card-description {
   font-size: 0.9rem;
+  min-height: 100px;
   color: #aaa;
   margin: 10px 0;
 }
@@ -100,7 +107,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 99999;
   backdrop-filter: blur(6px); /* Subtle blur for elegance */
 }
 
@@ -118,6 +125,7 @@
   position: relative;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7); /* Softer shadow for depth */
   animation: fadeIn 0.5s ease-out;
+  z-index: 9999;
 }
 
 .gear-modal-close1 {
@@ -163,7 +171,6 @@
   color: #d1d5db; /* Soft white for text */
   margin: 15px 0;
   line-height: 1.6;
- 
 }
 
 .gear-seller-info {
