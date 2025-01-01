@@ -54,7 +54,6 @@ const SignUpPage = () => {
 
       // fetch backend url to add user
       const tokennn = await userCredential.user.getIdToken();
-      console.log(tokennn);
 
       const response = await fetch(
         "http://20.64.237.50:3000/api/users/signin",
@@ -75,7 +74,6 @@ const SignUpPage = () => {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       } else {
         const data = await response.json();
-        console.log(data);
       }
 
       // Optionally, save the user data locally or in a database

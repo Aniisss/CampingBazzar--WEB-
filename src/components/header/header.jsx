@@ -23,7 +23,6 @@ function Header() {
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    console.log("Search for:", searchQuery);
   };
 
   const handleLogout = () => {

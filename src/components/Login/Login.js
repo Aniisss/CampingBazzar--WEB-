@@ -31,7 +31,6 @@ const Login = () => {
         formData.password
       );
       const token = await userCredential.user.getIdToken();
-      console.log(token);
 
       const response = await fetch("http://20.64.237.50:3000/api/users/signin", {
         method: "POST",
@@ -47,7 +46,6 @@ const Login = () => {
       } 
 
         const data = await response.json();
-        console.log(data);
   
       // Save user details to localStorage (or handle however you prefer)
       localStorage.setItem(
@@ -62,7 +60,6 @@ const Login = () => {
         })
       );
 
-      console.log("Login Successful:", data.user.email);
       navigate("/"); // Redirect to the Home page after successful login
     } catch (error) {
       // Handle errors from Firebase
