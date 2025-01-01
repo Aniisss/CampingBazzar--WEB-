@@ -26,7 +26,7 @@ const GearPage = () => {
   const formatTimeAgo = (timestamp) => {
     const now = new Date();
     const createdAt = new Date(timestamp * 1000); // Convert seconds to milliseconds
-    const diffInSeconds = Math.floor((now - createdAt) / 1000) + 1250;
+    const diffInSeconds = Math.floor((now - createdAt) / 1000);
 
     if (diffInSeconds < 60) {
       return "Now";
