@@ -65,16 +65,15 @@ const SignUpPage = () => {
           },
           body: JSON.stringify({
             userName: username,
-          })
+          }),
         }
       );
 
       if (!response.ok) {
         console.error(`Error: ${response.status} - ${response.statusText}`);
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      } else {
-        const data = await response.json();
       }
+      const data = await response.json();
 
       // Optionally, save the user data locally or in a database
       localStorage.setItem(
