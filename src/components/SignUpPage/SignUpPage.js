@@ -82,6 +82,7 @@ const SignUpPage = () => {
         JSON.stringify({
           username: username,
           email: email,
+          id: data.user.userID,
           token: tokennn,
           avatarUrl:
             "https://pics.craiyon.com/2023-11-26/oMNPpACzTtO5OVERUZwh3Q.webp", // Placeholder avatar URL

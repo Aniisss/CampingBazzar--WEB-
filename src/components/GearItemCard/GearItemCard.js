@@ -7,7 +7,7 @@ function GearItemCard({ image, title, price }) {
     <div className="gear-card">
       <img src={image} alt={title} />
       <h4>{title}</h4>
-      <p>${price}</p>
+      <p>{price} Tnd</p>
     </div>
   );
 }
