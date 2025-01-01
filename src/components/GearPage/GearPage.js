@@ -4,6 +4,9 @@ import Header from "../header/header";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+
 const GearPage = () => {
   const { state } = useLocation();
   const initialSearchQuery = state?.searchQuery || "";
@@ -53,7 +56,7 @@ const GearPage = () => {
           );
         } else {
           const userId = JSON.parse(
-            localStorage.getItem("user") ?? { id: "" }
+            localStorage.getItem("user") ?? JSON.stringify({ id: "" })
           ).id;
           response = await fetch(
             "http://20.64.237.50:3000/api/items/getItems",
@@ -83,11 +86,11 @@ const GearPage = () => {
         }));
         setGearItems(transformedItems);
 
-        const likedItems = transformedItems.filter((item,index)=>{
+        const likedItems = transformedItems.filter((item, index) => {
           if (item.isLiked) {
-            return true
+            return true;
           }
-          return false
+          return false;
         });
         setFavorites(likedItems);
       } catch (error) {
@@ -118,10 +121,10 @@ const GearPage = () => {
     setNewGear((prevGear) => ({ ...prevGear, [name]: value }));
   };
   const handleAddToFavorites = async (item) => {
-    const token = JSON.parse(localStorage.getItem("user")).token;
+    const token = JSON.parse(localStorage.getItem("user"))?.token;
     if (!token) {
-      alert("Please log in to add to favorites.");
       navigate("/login");
+      return;
     }
 
     const respones = await fetch(
@@ -173,8 +176,8 @@ const GearPage = () => {
     setIsSubmitting(true);
     const token = JSON.parse(localStorage.getItem("user")).token;
     if (!token) {
-      alert("Please log in to submit gear.");
       navigate("/login");
+      return;
     }
 
     try {
@@ -336,7 +339,9 @@ const GearPage = () => {
                 <div className="hover-details">
                   <p>{item.description}</p>
                   <p className="price">{item.price} Tnd</p>
-                  <button className="quick-buy-button" onClick={() => {}}>Buy Now</button>
+                  <button className="quick-buy-button" onClick={() => {}}>
+                    Buy Now
+                  </button>
                 </div>
               )}
               {/* Like Button */}
@@ -345,18 +350,23 @@ const GearPage = () => {
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent card click
                   item.isLiked = !item.isLiked;
-                  setGearItems((prevItems) => prevItems.map((i) => (i.id === item.id ? item : i)));
+                  setGearItems((prevItems) =>
+                    prevItems.map((i) => (i.id === item.id ? item : i))
+                  );
                   handleAddToFavorites(item);
                 }}
                 whileHover={{ scale: 1.2 }}
                 transition={{ type: "spring", stiffness: 300 }}
-                style={
-                  item.isLiked
-                    ? { color: "#ff69b4", fontSize: "1.4rem" }
-                    : { color: "#808080" }
-                }
+                style={{
+                  fontSize: "1.4rem",
+                  color: item.isLiked ? "#ff69b4" : "#808080",
+                }}
               >
-                {item.isLiked ? "❤️" : "♡"}
+                {item.isLiked ? (
+                  <FavoriteIcon style={{ color: "red" }} />
+                ) : (
+                  <FavoriteBorderIcon />
+                )}
               </motion.button>
             </motion.div>
           ))
@@ -399,7 +409,9 @@ const GearPage = () => {
             <p className="seller">Seller: {selectedItem.seller.name}</p>
             <p className="seller">email: {selectedItem.seller.contact}</p>
             <p className="seller">Seller: {selectedItem.seller.location}</p>
-            <button className="quick-buy-button" onClick={() => {}}>Buy Now</button>
+            <button className="quick-buy-button" onClick={() => {}}>
+              Buy Now
+            </button>
           </div>
         </motion.div>
       )}
@@ -413,10 +425,11 @@ const GearPage = () => {
               const token = JSON.parse(localStorage.getItem("user")).token;
               if (!token) {
                 navigate("/login");
+                return;
               }
             } catch (error) {
-              alert("Please log in to submit gear.");
               navigate("/login");
+              return;
             }
 
             setIsPopupOpen(true);
@@ -550,53 +563,67 @@ const GearPage = () => {
                 <div className="favorites-grid">
                   {favorites.map((item) => (
                     <motion.div
-                    key={item.id}
-                    className="gear-card"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    whileHover={{ scale: 1.05 }}
-                    onMouseEnter={() => setHoveredItem(item.id)}
-                    onMouseLeave={() => setHoveredItem(null)}
-                    onClick={() => handleCardClick(item)}
-                  >
-                    <img
-                      src={item.imageUrl}
-                      alt={item.name}
-                      className="gear-card-image"
-                    />
-                    <div className="gear-card-content">
-                      <h3>{item.name}</h3>
-                      <p className="gear-category">{item.category}</p>
-                      <p className="gear-card-created1"> Created: {item.created}</p>
-                    </div>
-                    {hoveredItem === item.id && (
-                      <div className="hover-details">
-                        <p>{item.description}</p>
-                        <p className="price">{item.price} Tnd</p>
-                        <button className="quick-buy-button" onClick={() => {}}>Buy Now</button>
-                      </div>
-                    )}
-                    {/* Like Button */}
-                    <motion.button
-                      className="like-button"
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent card click
-                        item.isLiked = !item.isLiked;
-                        setGearItems((prevItems) => prevItems.map((i) => (i.id === item.id ? item : i)));
-                        handleAddToFavorites(item);
-                      }}
-                      whileHover={{ scale: 1.2 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      style={
-                        item.isLiked
-                          ? { color: "#ff69b4", fontSize: "1.4rem" }
-                          : { color: "#808080" }
-                      }
+                      key={item.id}
+                      className="gear-card"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                      whileHover={{ scale: 1.05 }}
+                      onMouseEnter={() => setHoveredItem(item.id)}
+                      onMouseLeave={() => setHoveredItem(null)}
+                      onClick={() => handleCardClick(item)}
                     >
-                      {item.isLiked ? "❤️" : "♡"}
-                    </motion.button>
-                  </motion.div>
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        className="gear-card-image"
+                      />
+                      <div className="gear-card-content">
+                        <h3>{item.name}</h3>
+                        <p className="gear-category">{item.category}</p>
+                        <p className="gear-card-created1">
+                          {" "}
+                          Created: {item.created}
+                        </p>
+                      </div>
+                      {hoveredItem === item.id && (
+                        <div className="hover-details">
+                          <p>{item.description}</p>
+                          <p className="price">{item.price} Tnd</p>
+                          <button
+                            className="quick-buy-button"
+                            onClick={() => {}}
+                          >
+                            Buy Now
+                          </button>
+                        </div>
+                      )}
+                      {/* Like Button */}
+                      <motion.button
+                        className="like-button"
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent card click
+                          item.isLiked = !item.isLiked;
+                          setGearItems((prevItems) =>
+                            prevItems.map((i) => (i.id === item.id ? item : i))
+                          );
+                          handleAddToFavorites(item);
+                        }}
+                        whileHover={{ scale: 1.2 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                        style={
+                          item.isLiked
+                            ? { color: "#ff69b4", fontSize: "1.4rem" }
+                            : { color: "#808080" }
+                        }
+                      >
+                        {item.isLiked ? (
+                          <FavoriteIcon style={{ color: "red" }} />
+                        ) : (
+                          <FavoriteBorderIcon />
+                        )}
+                      </motion.button>
+                    </motion.div>
                   ))}
                 </div>
               )}
